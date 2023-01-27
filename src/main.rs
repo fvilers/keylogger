@@ -13,12 +13,11 @@ fn is_pressed(virtual_key: &i32) -> bool {
 }
 
 #[cfg(windows)]
-fn listen_for_keys(on_key_pressed: fn(i32)) {
+fn listen_for_keys(excluded_keys: &[i32], on_key_pressed: fn(i32)) {
     loop {
-        // TODO: exclude mouse buttons
-        // https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
         (0..255)
             .into_iter()
+            .filter(|key| !excluded_keys.contains(key))
             .filter(is_pressed)
             .for_each(on_key_pressed);
 
@@ -32,5 +31,9 @@ fn listen_for_keys() {
 }
 
 fn main() {
-    listen_for_keys(|key| println!("{key} pressed"));
+    // Exclude mouse buttons
+    // https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+    let excluded_keys = [0x01, 0x02, 0x04, 0x05, 0x06];
+
+    listen_for_keys(&excluded_keys, |key| println!("{key} pressed"));
 }
