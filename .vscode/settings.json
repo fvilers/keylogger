@@ -3,5 +3,5 @@
     "**/target": true,
     "**/Cargo.lock": true
   },
-  "cSpell.words": ["winapi", "winuser"]
+  "cSpell.words": ["keylogger", "winapi", "winuser"]
 }
